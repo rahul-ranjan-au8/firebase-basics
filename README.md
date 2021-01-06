@@ -1,4 +1,4 @@
-# firebase-basics
+# react-firebase
 
 1- npm i
 
