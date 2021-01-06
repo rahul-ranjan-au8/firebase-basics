@@ -1,32 +1,55 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { Switch, Route } from "react-router-dom";
 
-import Register from "./components/Register";
+import { auth, db } from "./firebase";
+
+import NavBar from "./components/NavBar";
+import NotFound from "./components/NotFound";
+import Profile from "./components/Profile";
 import Login from "./components/Login";
-
-import { auth } from "./firebase";
+import Register from "./components/Register";
 
 function App() {
-  const handleLogout = () => {
-    auth
-      .signOut()
-      .then((res) => {
-        alert("logged out");
-      })
-      .catch((err) => {
-        console.log(err);
+  const [user, setUser] = useState(null);
+  const [userData, setUserData] = useState(null);
+
+  function getUserData(id) {
+    db.collection("users")
+      .doc(id)
+      .get()
+      .then((doc) => {
+        setUserData(doc.data());
       });
-  };
+  }
+
+  useEffect(() => {
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        setUser(user);
+        getUserData(user.uid);
+      } else {
+        setUser(null);
+        setUserData(null);
+      }
+    });
+  }, []);
 
   return (
-    <div className="App d-flex flex-column align-items-center" style={{ height: "100vh", width: "100%" }}>
-      <div className="w-100 d-flex align-items-center justify-content-around flex-wrap my-5">
-        <Register />
-        <Login />
-      </div>
+    <div className="App">
+      <NavBar user={user} />
 
-      <button onClick={handleLogout} className="btn btn-danger">
-        Log OUT
-      </button>
+      <div className="MainPage d-flex flex-column align-items-center py-4">
+        <Switch>
+          <Route
+            exact
+            path="/"
+            render={(props) => <Profile {...props} user={user} userData={userData} getUserData={getUserData} />}
+          />
+          <Route exact path="/login" render={(props) => <Login {...props} user={user} />} />
+          <Route exact path="/register" render={(props) => <Register {...props} user={user} />} />
+          <Route component={NotFound} />
+        </Switch>
+      </div>
     </div>
   );
 }

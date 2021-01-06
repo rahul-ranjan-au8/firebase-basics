@@ -1,7 +1,9 @@
 import React, { useState } from "react";
-import { db, auth } from "../firebase";
+import { Link, Redirect } from "react-router-dom";
 
-function Login() {
+import { auth } from "../firebase";
+
+function Login({ user, history }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -17,33 +19,41 @@ function Login() {
     auth
       .signInWithEmailAndPassword(email, password)
       .then((res) => {
-        db.collection("users")
-          .doc(res.user.uid)
-          .get()
-          .then((res) => {
-            console.log(res.data());
-          });
+        history.push("/");
       })
       .catch((err) => {
-        console.log(err);
         alert(err.message);
       });
   };
 
+  if (user) {
+    return <Redirect to="/" />;
+  }
   return (
-    <form onSubmit={handleSubmit} className="d-flex flex-column align-items-center p-5 border">
-      <input type="text" value={email} onChange={handleEmailChange} className="form-control" placeholder="email" />
-      <input
-        type="password"
-        value={password}
-        onChange={handlePasswordChange}
-        className="form-control my-4"
-        placeholder="password"
-      />
-      <button type="submit" className="btn btn-success">
-        Login
-      </button>
-    </form>
+    <div className="container h-100 d-flex flex-column align-items-center justify-content-center">
+      <h1>Login</h1>
+      <div className="row w-100 d-flex justify-content-center">
+        <div className="col-sm-12 col-md-8 col-lg-6">
+          <form onSubmit={handleSubmit} className="d-flex flex-column align-items-center p-5 border shadow-lg">
+            <p className="text-center">
+              New User?
+              <Link to="/register"> Register Here</Link>
+            </p>
+            <input type="text" value={email} onChange={handleEmailChange} className="form-control" placeholder="email" />
+            <input
+              type="password"
+              value={password}
+              onChange={handlePasswordChange}
+              className="form-control my-4"
+              placeholder="password"
+            />
+            <button type="submit" className="btn btn-success">
+              Login
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
   );
 }
 
