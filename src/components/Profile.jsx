@@ -6,11 +6,29 @@ function Profile({ user, userData, getUserData }) {
   const handleUpdateName = () => {
     if (user) {
       const name = prompt("Enter you Name:");
+      if (name !== "") {
+        db.collection("users")
+          .doc(user.uid)
+          .set({ name: name }, { merge: true })
+          .then(() => {
+            alert("Name changed!");
+            getUserData(user.uid);
+          })
+          .catch((err) => {
+            alert(err);
+          });
+      }
+    }
+  };
+
+  const handleUpdateAge = () => {
+    if (user) {
+      const age = prompt("Enter you Age:");
       db.collection("users")
         .doc(user.uid)
-        .set({ name: name }, { merge: true })
+        .set({ age: age }, { merge: true })
         .then(() => {
-          alert("Name changed!");
+          alert("Age changed!");
           getUserData(user.uid);
         })
         .catch((err) => {
@@ -24,9 +42,17 @@ function Profile({ user, userData, getUserData }) {
   }
   return (
     <div className="container h-100 d-flex flex-column align-items-center">
-      {userData ? <h1>Welcome {userData.name}</h1> : null}
+      {userData ? (
+        <>
+          <h1>Welcome {userData.name}</h1>
+          <h1>Age: {userData.age}</h1>{" "}
+        </>
+      ) : null}
       <button onClick={handleUpdateName} className="btn btn-warning my-4">
         Update Name
+      </button>
+      <button onClick={handleUpdateAge} className="btn btn-warning my-4">
+        Update Age
       </button>
     </div>
   );

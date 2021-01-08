@@ -19,6 +19,9 @@ function App() {
       .get()
       .then((doc) => {
         setUserData(doc.data());
+      })
+      .catch((err) => {
+        console.log(err);
       });
   }
 
@@ -47,6 +50,7 @@ function App() {
           />
           <Route exact path="/login" render={(props) => <Login {...props} user={user} />} />
           <Route exact path="/register" render={(props) => <Register {...props} user={user} />} />
+
           <Route component={NotFound} />
         </Switch>
       </div>

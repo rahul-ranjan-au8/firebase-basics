@@ -6,6 +6,7 @@ import { auth } from "../firebase";
 function Login({ user, history }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -16,13 +17,16 @@ function Login({ user, history }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setIsLoading(true);
     auth
       .signInWithEmailAndPassword(email, password)
       .then((res) => {
         history.push("/");
+        setIsLoading(false);
       })
       .catch((err) => {
         alert(err.message);
+        setIsLoading(false);
       });
   };
 
@@ -47,9 +51,13 @@ function Login({ user, history }) {
               className="form-control my-4"
               placeholder="password"
             />
-            <button type="submit" className="btn btn-success">
-              Login
-            </button>
+            {isLoading ? (
+              <div class="spinner-border" role="status"></div>
+            ) : (
+              <button type="submit" className="btn btn-success">
+                Login
+              </button>
+            )}
           </form>
         </div>
       </div>
