@@ -52,7 +52,7 @@ function Login({ user, history }) {
               placeholder="password"
             />
             {isLoading ? (
-              <div class="spinner-border" role="status"></div>
+              <div className="spinner-border" role="status"></div>
             ) : (
               <button type="submit" className="btn btn-success">
                 Login

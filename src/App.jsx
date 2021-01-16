@@ -8,6 +8,7 @@ import NotFound from "./components/NotFound";
 import Profile from "./components/Profile";
 import Login from "./components/Login";
 import Register from "./components/Register";
+import Tailwind from "./components/Tailwind";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -51,6 +52,7 @@ function App() {
           <Route exact path="/login" render={(props) => <Login {...props} user={user} />} />
           <Route exact path="/register" render={(props) => <Register {...props} user={user} />} />
 
+          <Route exact path="/tailwind" component={Tailwind} />
           <Route component={NotFound} />
         </Switch>
       </div>

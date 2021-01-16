@@ -1,5 +1,9 @@
 @import url("https://fonts.googleapis.com/css2?family=Lato:wght@400;500;700&display=swap");
 
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 * {
   margin: 0;
   padding: 0;
@@ -18,7 +22,6 @@ body {
 .NavBar {
   width: 100%;
   min-height: 8vh;
-  background: linear-gradient(135deg, #314550 25%, #76608b 100%);
 }
 
 .MainPage {

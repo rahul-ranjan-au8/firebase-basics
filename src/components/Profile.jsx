@@ -6,7 +6,7 @@ function Profile({ user, userData, getUserData }) {
   const handleUpdateName = () => {
     if (user) {
       const name = prompt("Enter you Name:");
-      if (name !== "") {
+      if (name) {
         db.collection("users")
           .doc(user.uid)
           .set({ name: name }, { merge: true })
@@ -24,16 +24,18 @@ function Profile({ user, userData, getUserData }) {
   const handleUpdateAge = () => {
     if (user) {
       const age = prompt("Enter you Age:");
-      db.collection("users")
-        .doc(user.uid)
-        .set({ age: age }, { merge: true })
-        .then(() => {
-          alert("Age changed!");
-          getUserData(user.uid);
-        })
-        .catch((err) => {
-          alert(err);
-        });
+      if (age) {
+        db.collection("users")
+          .doc(user.uid)
+          .set({ age: age }, { merge: true })
+          .then(() => {
+            alert("Age changed!");
+            getUserData(user.uid);
+          })
+          .catch((err) => {
+            alert(err);
+          });
+      }
     }
   };
 
