@@ -117,7 +117,11 @@ function NavBar({ user }) {
               onClick={() => setIsOpenMenu(!isOpenMenu)}
             >
               <span className="sr-only">Open main menu</span>
-
+              {/* <!--
+                Heroicon name: menu
+  
+                Menu open: "hidden", Menu closed: "block"
+              --> */}
               <svg
                 className={`block h-6 w-6 ${isOpenMenu ? "hidden" : "block"}`}
                 xmlns="http://www.w3.org/2000/svg"
